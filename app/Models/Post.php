@@ -16,6 +16,7 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'hash_id',
         'parent_id',
         'user_id',
         'category_id',

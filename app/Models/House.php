@@ -42,4 +42,9 @@ class House extends Model
     {
         return $this->belongsToMany(Service::class, HouseService::class);
     }
+
+    public function chats()
+    {
+        return $this->morphMany(ChatRoom::class, 'chattable');
+    }
 }

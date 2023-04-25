@@ -9,14 +9,6 @@ use Illuminate\Http\Request;
 class LikeController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -27,7 +19,11 @@ class LikeController extends Controller
 
         $user = Auth()->user();
 
+        $like = Like::where('post_id', $request->post_id)->where('user_id', $user->id)->first();
 
+        if ($like) {
+            return response($like, 409);
+        }
 
         $like = Like::create([
             'post_id' => $request->post_id,
@@ -40,17 +36,13 @@ class LikeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Like $like)
+    public function show(string $post_id)
     {
-        //
-    }
+        $user = Auth()->user();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Like $like)
-    {
-        //
+        $like = Like::where('post_id', $post_id)->where('user_id', $user->id)->exists();
+
+        return response($like);
     }
 
     /**

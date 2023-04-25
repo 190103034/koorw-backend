@@ -3,47 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Block;
+use App\Models\House;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BlockController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): Response
     {
-        //
-    }
+        $request->validate([
+            'house_id' => ['required', 'numeric', 'exists:' . House::class . ',id']
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $house_id = $request->house_id;
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Block $block)
-    {
-        //
-    }
+        $blocks = Block::where('house_id', $house_id)->get();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Block $block)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Block $block)
-    {
-        //
+        return response($blocks);
     }
 }

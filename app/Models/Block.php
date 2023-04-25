@@ -53,4 +53,9 @@ class Block extends Model
     {
         return $this->belongsTo(House::class);
     }
+
+    public function chats()
+    {
+        return $this->morphMany(ChatRoom::class, 'chattable');
+    }
 }

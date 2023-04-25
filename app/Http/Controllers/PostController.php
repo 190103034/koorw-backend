@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Visibility;
+use Hashids\Hashids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -67,7 +69,27 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'parent_id' => ['integer'],
+            'category_id' => ['required', 'integer', 'exists:' . Category::class . ',id'],
+            'visibility_id' => ['required', 'integer', 'exists:' . Visibility::class . ',id'],
+            'body' => ['required', 'string']
+        ]);
+
+        $user = Auth()->user();
+
+        $hash = new Hashids('Post');
+
+        $post = Post::create([
+            'hash_id' => $hash->encode($user->id, intval($request->category_id), intval($request->visibility_id), time()),
+            'parent_id' => $request->parent_id,
+            'user_id' => $user->id,
+            'category_id' => $request->category_id,
+            'visibility_id' => $request->visibility_id,
+            'body' => $request->body
+        ]);
+
+        return response($post, 201);
     }
 
     /**
@@ -75,7 +97,9 @@ class PostController extends Controller
      */
     public function show(string $hash_id)
     {
-        $post = Post::where('hash_id', $hash_id)->with(['childPosts'])->first();
+        $post = Post::where('hash_id', $hash_id)->with(['childPosts' => function ($query) {
+            $query->orderBy('created_at', 'DESC');
+        }])->firstOrFail();
 
         return response($post, 200);
     }

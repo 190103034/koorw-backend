@@ -1,11 +1,20 @@
 <?php
 
+use App\Events\NewMessage;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\BlockController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\StreetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisibilityController;
+use App\Models\ChatMessage;
+use App\Models\ChatRoom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,27 +31,36 @@ use Illuminate\Support\Facades\Route;
 
 
 // Auth
-// Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
-Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
+Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::post('/register/verify', [RegisteredUserController::class, 'verify']);
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 
-// Post
-Route::resource('/post', PostController::class)->except(['index']);
-
-// User
-Route::resource('/user', UserController::class);
+// Street
+Route::get('/street', [StreetController::class, 'index']);
 
 // House
-Route::resource('/house', HouseController::class);
+Route::get('/house', [HouseController::class, 'index']);
+Route::get('/house/{house}', [HouseController::class, 'show']);
+Route::post('/house/verify', [HouseController::class, 'verify']);
 
-// Category
-Route::get('/category', [CategoryController::class, 'index']);
+// Block
+Route::get('/block', [BlockController::class, 'index']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/post', [PostController::class, 'index']);
+    Route::post('/user', [UserController::class, 'store']);
+    Route::get('/user/{user}', [UserController::class, 'show']);
 
-    Route::resource('/like', LikeController::class);
-});
+    Route::resource('/post', PostController::class)->except(['update', 'destroy']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('/search', [SearchController::class, 'index']);
+
+    Route::get('/category', [CategoryController::class, 'index']);
+
+    Route::get('/visibility', [VisibilityController::class, 'index']);
+
+    Route::resource('/like', LikeController::class)->except(['index', 'update']);
+
+    Route::get('/chats', [ChatController::class, 'rooms']);
+    Route::get('/chats/{room_id}', [ChatController::class, 'messages']);
+    Route::post('/chats/{room_id}', [ChatController::class, 'message']);
 });

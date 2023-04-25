@@ -12,38 +12,8 @@ class VisibilityController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $visibilities = Visibility::all();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Visibility $visibility)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Visibility $visibility)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Visibility $visibility)
-    {
-        //
+        return response($visibilities, 200);
     }
 }
