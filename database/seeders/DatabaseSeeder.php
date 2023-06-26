@@ -54,6 +54,107 @@ class DatabaseSeeder extends Seeder
             'name_en' => 'RC Exclusive Life'
         ]);
 
+        \App\Models\Service::create([
+            'type' => 'master',
+            'name_ru' => 'Электрик',
+            'name_kk' => 'Электрші',
+            'name_en' => 'Electrician'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 1,
+            'type' => 'phone',
+            'value' => '77077077070'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 1,
+            'type' => 'whatsapp',
+            'value' => '77077077070'
+        ]);
+
+        \App\Models\Service::create([
+            'type' => 'master',
+            'name_ru' => 'Сантехник',
+            'name_kk' => 'Сантехник',
+            'name_en' => 'Plumber'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 2,
+            'type' => 'phone',
+            'value' => '77022022020'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 2,
+            'type' => 'whatsapp',
+            'value' => '77022022020'
+        ]);
+
+        \App\Models\Service::create([
+            'type' => 'business',
+            'name_ru' => 'Пиццерия d’Italia',
+            'name_kk' => 'd’Italia пиццериясы',
+            'name_en' => 'Pizzeria d’Italia'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 3,
+            'type' => 'phone',
+            'value' => '77033033030'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 3,
+            'type' => 'whatsapp',
+            'value' => '77033033030'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 3,
+            'type' => 'instagram',
+            'value' => 'del_papa'
+        ]);
+
+        \App\Models\Service::create([
+            'type' => 'business',
+            'name_ru' => 'Салон красоты Sulujan',
+            'name_kk' => 'Sulujan сән салоны',
+            'name_en' => 'Fashion Salon Sulujan'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 4,
+            'type' => 'phone',
+            'value' => '77044044040'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 4,
+            'type' => 'whatsapp',
+            'value' => '77044044040'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 4,
+            'type' => 'instagram',
+            'value' => 'sulujan'
+        ]);
+        \App\Models\ServiceContact::create([
+            'service_id' => 4,
+            'type' => 'telegram',
+            'value' => 'sulujan'
+        ]);
+
+
+        \App\Models\HouseService::create([
+            'house_id' => 1,
+            'service_id' => 1
+        ]);
+        \App\Models\HouseService::create([
+            'house_id' => 1,
+            'service_id' => 2
+        ]);
+        \App\Models\HouseService::create([
+            'house_id' => 1,
+            'service_id' => 3
+        ]);
+        \App\Models\HouseService::create([
+            'house_id' => 1,
+            'service_id' => 4
+        ]);
+
         \App\Models\Block::create([
             'house_id' => 1,
             'name_ru' => 'Блок 1',
@@ -122,17 +223,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\ChatRoom::create([
             'chattable_id' => 1,
             'chattable_type' => 'App\Models\Block'
-        ]);
-
-        \App\Models\ChatMessage::create([
-            'chat_room_id' => 1,
-            'user_id' => 1,
-            'message' => 'test'
-        ]);
-        \App\Models\ChatMessage::create([
-            'chat_room_id' => 1,
-            'user_id' => 2,
-            'message' => 'test2'
         ]);
     }
 }
